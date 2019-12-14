@@ -1,8 +1,13 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: basic
-  region: us-east-2
+  name: basic3
+  region: us-west-2
+
+vpc:
+  cidr: 10.0.0.0/16
+  # nat:
+  #   gateway: Disabled
 
 managedNodeGroups:
   - name: ng-1
@@ -10,8 +15,13 @@ managedNodeGroups:
     desiredCapacity: 3
     ssh:
       allow: true
-      publicKeyPath: ohiov2
+      publicKeyPath: oregonv2
     iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       withAddonPolicies:
         imageBuilder: true
         ebs: true
@@ -24,8 +34,13 @@ managedNodeGroups:
     desiredCapacity: 2
     ssh:
       allow: true
-      publicKeyPath: ohiov2
+      publicKeyPath: oregonv2
     iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
       withAddonPolicies:
         imageBuilder: true
         ebs: true
