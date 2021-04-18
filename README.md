@@ -7,8 +7,13 @@ Create the pod
 
 > kubectl apply -f https://raw.githubusercontent.com/prabhatsharma/eks/master/debug-pod.yaml
 
-
 exec into the pod
 
 > kubectl exec -it ubuntu -- sh
 
+or
+
+
+> kubectl apply -f https://raw.githubusercontent.com/prabhatsharma/eks/master/debug-pod-amazon-linux.yaml
+
+> kubectl exec -it amazonlinux -- sh
