@@ -1,0 +1,47 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: kubecon
+  region: us-west-2
+
+vpc:
+  cidr: 10.5.0.0/16
+
+iam:
+  withOIDC: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+
+managedNodeGroups:
+  - name: ng-1
+    instanceType: m5.2xlarge
+    desiredCapacity: 3
+    ssh:
+      allow: true
+      publicKeyPath: oregon-ml
+    iam:
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+      withAddonPolicies:
+        imageBuilder: true
+        ebs: true
+        certManager: true
+        externalDNS: true
+        albIngress: true
+        cloudWatch: true
+
+fargateProfiles:
+  - name: fargate1
+    selectors:
+      # All workloads in the "default" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: fargate1
+      # All workloads in the "kube-system" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: fargate-spark
+
